@@ -1,10 +1,14 @@
 import BaseComponent from 'BaseComponent'
 import FrontContainer from 'FrontContainer'
 import PagesContainer from 'PagesContainer'
+import AppStore from 'AppStore'
+import AppConstants from 'AppConstants'
+import AppActions from 'AppActions'
 
 class AppTemplate extends BaseComponent {
 	constructor() {
 		super()
+		this.resize = this.resize.bind(this)
 	}
 	render(parent) {
 		super.render('AppTemplate', parent, undefined)
@@ -13,19 +17,29 @@ class AppTemplate extends BaseComponent {
 		super.componentWillMount()
 	}
 	componentDidMount() {
-		super.componentDidMount()
+		this.frontContainer = new FrontContainer()
+		this.frontContainer.render('#app-template')
 
-		var frontContainer = new FrontContainer()
-		frontContainer.render('#app-template')
+		this.pagesContainer = new PagesContainer()
+		this.pagesContainer.render('#app-template')
 
-		var pagesContainer = new PagesContainer()
-		pagesContainer.render('#app-template')
+		setTimeout(()=>{
+			this.onReady()
+		}, 0)
 
 		GlobalEvents.resize()
+
+		super.componentDidMount()
 	}
-	componentWillUnmount() {
-		super.componentWillUnmount()
+	onReady() {
+		AppStore.on(AppConstants.WINDOW_RESIZE, this.resize)
+	}
+	resize() {
+		// this.pagesContainer.resize()
+		this.frontContainer.resize()
+		super.resize()
 	}
 }
 
 export default AppTemplate
+

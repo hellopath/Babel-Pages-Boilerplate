@@ -13,6 +13,7 @@ import ContactTemplate from 'Contact_hbs'
 class PagesContainer extends BasePager {
 	constructor() {
 		super()
+		this.didHasherChange = this.didHasherChange.bind(this)
 	}
 	componentWillMount() {
 		AppStore.on(AppConstants.PAGE_HASHER_CHANGED, this.didHasherChange)

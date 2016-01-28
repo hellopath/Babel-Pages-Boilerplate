@@ -1,13 +1,15 @@
-import autobind from 'Autobind'
 import slug from 'to-slug-case'
 
 class BaseComponent {
 	constructor() {
-		autobind(this)
+		this.domIsReady = false
+		this.componentDidMount = this.componentDidMount.bind(this)
 	}
 	componentWillMount() {
 	}
 	componentDidMount() {
+		this.domIsReady = true
+		this.resize()
 	}
 	render(childId, parentId, template, object) {
 		this.componentWillMount()
@@ -22,7 +24,8 @@ class BaseComponent {
 	remove() {
 		this.componentWillUnmount()
 		this.child.remove()
-		// console.log(this.childId, 'removed from', this.parentId)
+	}
+	resize() {
 	}
 	componentWillUnmount() {
 	}
